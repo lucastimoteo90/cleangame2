@@ -59,6 +59,7 @@ public class MediumRoom extends Room{
 		return pmdErrors;
 	}
     
+	@JsonIgnore
 	/*Retorna somente arquivos com um unico erro*/
 	public List<PMDErrors> getPmdErrorsUniqueErrorInFile() {
 		/*Super gambiarra de emergencia*/

@@ -38,6 +38,8 @@ public abstract class Room implements Serializable{
 	
 	private Boolean open;
 	
+	private Integer totalParticipantes;
+	
 	@OneToMany(mappedBy="room")
 	@JsonIgnore
 	private List<Question> questions = new ArrayList<Question>();
@@ -98,6 +100,15 @@ public abstract class Room implements Serializable{
 		return name;
 	}
 
+	
+
+	public Integer getTotalParticipantes() {
+		return this.members.size();
+	}
+
+	public void setTotalParticipantes(Integer totalParticipantes) {
+		this.totalParticipantes = totalParticipantes;
+	}
 
 	public void setName(String name) {
 		this.name = name;

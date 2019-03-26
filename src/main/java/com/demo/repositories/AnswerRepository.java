@@ -21,7 +21,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Integer>{
   	List<Answer>findByUserAndQuestionNotIn(User user, List<Question> questions); 
   	
     List<Answer> findByUserAndQuestion(User user, Question question);
-    
+   
     List<Answer> findByTeamAndQuestion(Team team, Question question);
     
     List<Answer> findByUserAndQuestionIn(User user, List<Question> questions);

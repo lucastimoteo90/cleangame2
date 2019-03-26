@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.demo.domain.Answer;
 import com.demo.domain.Question;
 import com.demo.domain.Room;
+import com.demo.domain.Score;
 import com.demo.domain.Team;
 import com.demo.domain.User;
 import com.demo.dto.SkipDTO;
@@ -31,6 +32,9 @@ public class QuestionService {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired 
+	private ScoreService scoreService;
 	
 	@Autowired
 	private TeamService teamService;
@@ -177,6 +181,22 @@ public class QuestionService {
 		answer.setSkip(true);
 	    answer.setEnd(new Timestamp(System.currentTimeMillis()));
 		answerRepository.save(answer);	
+		
+		
+		if(scoreService.findByUserAndRoom(user, question.getRoom()).size() > 0 ){
+			Score score = scoreService.findByUserAndRoom(user, question.getRoom()).get(0);
+		    score.computeScore(answer);
+		    scoreService.save(score);
+		}else{
+			Score score = new Score();
+			score.setRoom(question.getRoom());
+			score.setUser(user);
+			score.setScore(0.0);
+			score.setConsecutiveHits(0);
+			score = scoreService.save(score);
+			score.computeScore(answer);
+			scoreService.save(score);
+		}	 
 		
 	    
 	    

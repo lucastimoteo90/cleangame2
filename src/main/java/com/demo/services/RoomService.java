@@ -11,10 +11,13 @@ import org.springframework.stereotype.Service;
 import com.demo.domain.Answer;
 import com.demo.domain.Question;
 import com.demo.domain.Room;
+import com.demo.domain.Score;
 import com.demo.domain.Team;
 import com.demo.domain.User;
 import com.demo.dto.AlternativeDTO;
+import com.demo.dto.RankingRoomDTO;
 import com.demo.dto.ResumeRoomDTO;
+import com.demo.dto.UserRankingDTO;
 import com.demo.repositories.RoomRepository;
 import com.demo.security.UserSS;
 import com.demo.services.exception.AuthorizationException;
@@ -33,6 +36,9 @@ public class RoomService {
 	
 	@Autowired
 	private TeamService teamService;
+	
+	@Autowired 
+	private ScoreService scoreService;
 	
 	
 	@Autowired
@@ -129,13 +135,19 @@ public class RoomService {
 	
 	
 	public AlternativeDTO markAlternative(AlternativeDTO alternative) {
+		UserSS userSS = UserService.authenticated();
+		if(userSS == null) {
+			throw new AuthorizationException("Token Inválido");
+		}	    
+		User user = userService.findById(userSS.getID());
+		
 		//Obtem question
 		Question question = questionService.findById(alternative.getQuestion());
 		Answer answer = answerService.findById(alternative.getAnswer());
 		
 		
-		System.out.println("QUESTION"+question.getMd5correct());
-	    System.out.println("ANSWER"+answer.getQuestion().getAsk());
+		//System.out.println("QUESTION"+question.getMd5correct());
+	    //System.out.println("ANSWER"+answer.getQuestion().getAsk());
 		
 	    
 		
@@ -146,10 +158,25 @@ public class RoomService {
 			alternative.setCorrect(false);
 		    answer.setCorrect(false);
 		}	  
+				
+		answer.setEnd(new Timestamp(System.currentTimeMillis()));
+		answerService.save(answer);
 		
-		
-	    answer.setEnd(new Timestamp(System.currentTimeMillis()));
-	    answerService.save(answer);	
+		if(scoreService.findByUserAndRoom(user, question.getRoom()).size() > 0 ){
+			Score score = scoreService.findByUserAndRoom(user, question.getRoom()).get(0);
+		    score.computeScore(answer);
+		    scoreService.save(score);
+		}else{
+			Score score = new Score();
+			score.setRoom(question.getRoom());
+			score.setUser(user);
+			score.setScore(0.0);
+			score.setConsecutiveHits(0);
+			score = scoreService.save(score);
+			score.computeScore(answer);
+			scoreService.save(score);
+		}	 
+			
 		
 		
 		return alternative;
@@ -210,8 +237,46 @@ public class RoomService {
 		resume.setHits(answerService.findAnswerCorrectsTeam(team, room));
 		resume.setErrors(answerService.findAnswerIncorrectsTeam(team, room));
 		resume.setSkips(answerService.findAnswerSkipsTeam(team, room));
+	
+		Score score = scoreService.findByUserAndRoom(user, room).get(0);
+		
+		resume.setPenalites(score.getPanalites());
+		resume.setScore(score.getScore());
+		
+		
+		
 		
 		return resume;
+	}
+	
+
+	public RankingRoomDTO makeRanking(Integer id) {
+		//Mudar pra team :)
+		RankingRoomDTO ranking = new RankingRoomDTO();
+		UserSS userSS = UserService.authenticated();
+		if(userSS == null) {
+			throw new AuthorizationException("Token Inválido");
+		}	
+		
+		User user = userService.findById(userSS.getID());
+		//Team team = teamService.findById(id);
+		Room room = teamService.findRoomByTeam(id);		
+		
+		Integer position = 1;
+		for(Score score: scoreService.findByRoomOrderByScoreDesc(room)){
+		  User userScore = score.getUser();	
+		  UserRankingDTO userDTO = new UserRankingDTO();
+		  
+		  userDTO.setEmail(userScore.getMail());
+		  userDTO.setName(userScore.getName());
+		  userDTO.setScore(score.getScore());
+		  userDTO.setPosition(position++);
+		  
+		   ranking.getUsersRankingDTO().add(userDTO);
+		}
+	
+		
+		return ranking;
 	}
 	
 	public ResumeRoomDTO makeResumeBKP(Integer id) {

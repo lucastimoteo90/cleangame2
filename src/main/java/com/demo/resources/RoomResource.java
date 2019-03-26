@@ -19,6 +19,7 @@ import com.demo.domain.MediumRoom;
 import com.demo.domain.Room;
 import com.demo.domain.Team;
 import com.demo.dto.AlternativeDTO;
+import com.demo.dto.RankingRoomDTO;
 import com.demo.dto.ResumeRoomDTO;
 import com.demo.services.EasyRoomService;
 import com.demo.services.MediumRoomService;
@@ -56,6 +57,11 @@ public class RoomResource {
 		return ResponseEntity.ok().body(resume);
 	}
 	
+	@RequestMapping(value="/{id}/ranking",method=RequestMethod.GET)
+	public ResponseEntity<RankingRoomDTO> makeRanking(@PathVariable Integer id){
+	RankingRoomDTO ranking = service.makeRanking(id);
+		return ResponseEntity.ok().body(ranking);
+	}
 	
 	
 	@RequestMapping(value="/{id}/restart",method=RequestMethod.GET)

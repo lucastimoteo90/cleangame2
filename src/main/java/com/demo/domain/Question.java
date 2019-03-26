@@ -82,7 +82,7 @@ public class Question implements Serializable{
 		
 		
 		
-		//Collections.shuffle(this.getAlternatives());
+		Collections.shuffle(this.getAlternatives());
 		
 		return null;
 	}

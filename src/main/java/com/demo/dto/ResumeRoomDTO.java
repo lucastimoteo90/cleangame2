@@ -10,9 +10,14 @@ public class ResumeRoomDTO implements Serializable {
     Integer hits;
     Integer errors;
     Integer skips;
+      
     
     Integer totalQuestions;
-
+    Integer position;
+    
+    Double score;
+    Double penalites;
+    
 	public Integer getRoom_id() {
 		return room_id;
 	}
@@ -23,6 +28,15 @@ public class ResumeRoomDTO implements Serializable {
 
 	public Integer getHits() {
 		return hits;
+	}
+	
+
+	public Double getPenalites() {
+		return penalites;
+	}
+
+	public void setPenalites(Double penalites) {
+		this.penalites = penalites;
 	}
 
 	public void setHits(Integer hits) {
@@ -52,6 +66,23 @@ public class ResumeRoomDTO implements Serializable {
 	public void setSkips(Integer skips) {
 		this.skips = skips;
 	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+	
     
     
     

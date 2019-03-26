@@ -14,6 +14,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.demo.domain.enums.RoomType;
@@ -68,6 +69,8 @@ public abstract class Room implements Serializable{
 	@ManyToMany(mappedBy="teamRooms")
 	private List<Team> teamRooms = new ArrayList<Team>();
 	
+	@OneToMany(mappedBy="room")
+	private List<Score> scores = new ArrayList<>();
 	
 	public Room() {
 		
@@ -98,9 +101,7 @@ public abstract class Room implements Serializable{
 	
 	public String getName() {
 		return name;
-	}
-
-	
+	}	
 
 	public Integer getTotalParticipantes() {
 		return this.members.size();

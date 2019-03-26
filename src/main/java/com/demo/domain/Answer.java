@@ -51,7 +51,16 @@ public class Answer implements Serializable{
 	
 	private Boolean skip;
 	
-		
+	private Integer score;	
+	
+	
+	public Answer() {
+	 this.setSkip(false);
+	 this.setTip1(false);
+	 this.setTip2(false);
+	 this.setTip3(false);	 
+	}
+			
 	
 	public Integer getId() {
 		return id;
@@ -60,7 +69,6 @@ public class Answer implements Serializable{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
 			
 	public Integer getTips() {
 		return tips;
@@ -130,8 +138,6 @@ public class Answer implements Serializable{
 	public void setSkip(Boolean skip) {
 		this.skip = skip;
 	}
-
-	
 	
 	
 	public Boolean getTip1() {
@@ -164,6 +170,14 @@ public class Answer implements Serializable{
 
 	public void setTeam(Team team) {
 		this.team = team;
+	}
+	
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
 	@Override

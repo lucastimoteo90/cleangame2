@@ -51,7 +51,12 @@ public class User implements Serializable{
 	private Set<Integer> profiles =  new HashSet<>();
 	
 	@OneToMany(mappedBy="user")
+	@JsonIgnore
 	private List<Answer> answers = new ArrayList<>();
+	
+	@OneToMany(mappedBy="user")
+	@JsonIgnore
+	private List<Score> scores = new ArrayList<>();
 	
 	
 	public User(Integer id, String mail, String passwd,String name) {
@@ -62,6 +67,20 @@ public class User implements Serializable{
 		this.name = name;
 		addProfile(Profile.BASIC_USER);
 	}
+
+	
+	
+	public List<Score> getScores() {
+		return scores;
+	}
+
+
+
+	public void setScores(List<Score> scores) {
+		this.scores = scores;
+	}
+
+
 
 	public List<Room> getRoomsAdministrator() {
 		return roomsAdministrator;
@@ -87,6 +106,15 @@ public class User implements Serializable{
 		this.name = name;
 	}
 	
+		
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
+	}
+
 	public User() {
 		addProfile(Profile.BASIC_USER);
 	}

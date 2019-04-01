@@ -284,15 +284,27 @@ public class RoomService {
 		   userReport.setUser(score.getUser()); 
 		   userReport.setRoom(room);
 		   userReport.setScore(score);
+		   
+		   answerService.findAnswersUserQuestions(score.getUser(), questions);
+		   System.out.println("AQUI!!!!!!!!!!");
+		   
 		   for(Answer answer: answerService.findAnswersUserQuestions(score.getUser(), questions)) {
-			   answer.setUser(null);
-			   //answer.setQuestion(null);
-			   answer.setScore(null);
-			   answer.setTeam(null);
-			   
-			   answer.setTime((answer.getEnd().getTime() - answer.getStart().getTime())/1000);
-			   userReport.getAnswers().add(answer);
+			   System.out.println("AQUI TAMBEM!!!!!!!!!!");   
+			answer.setUser(null);
+			answer.setQuestion(null);
+			answer.setScore(null);
+			answer.setTeam(null);
+		
+			
+		    try {
+		     answer.setTime((answer.getEnd().getTime() - answer.getStart().getTime())/1000);
+		    }catch(NullPointerException ex) {
+		    	answer.setTime(0L);
+		    }
+			userReport.getAnswers().add(answer);
+			 
 		   }
+		   System.out.println("SAIU TAMBEM!!!!!!!!!!");   
 		   
 		   //userReport.setAnswers(answerService.findAnswersUserQuestions(score.getUser(), questions));
            report.add(userReport);		     

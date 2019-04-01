@@ -291,7 +291,7 @@ public class RoomService {
 		   for(Answer answer: answerService.findAnswersUserQuestions(score.getUser(), questions)) {
 			   System.out.println("AQUI TAMBEM!!!!!!!!!!");   
 			answer.setUser(null);
-			answer.setQuestion(null);
+			//answer.setQuestion(null);
 			answer.setScore(null);
 			answer.setTeam(null);
 		

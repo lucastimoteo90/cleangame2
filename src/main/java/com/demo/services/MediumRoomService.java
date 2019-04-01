@@ -106,6 +106,9 @@ public class MediumRoomService {
 				newAnswer = answerRepository.save(newAnswer);
 				question.setAnswer(newAnswer.getId());
 				question.makeAlternatives();
+				question.setTip("");
+				question.setTip2("");
+				question.setTip3("");
 				return question;
 			}
 			
@@ -113,6 +116,9 @@ public class MediumRoomService {
 		    if(answerRepository.findByTeamAndQuestionAndEndIsNull(team, question).size() > 0){
 		    	question.setAnswer(answerRepository.findByTeamAndQuestionAndEndIsNull(team, question).get(0).getId());
 		    	question.makeAlternatives();
+		    	question.setTip("");
+				question.setTip2("");
+				question.setTip3("");
 		    	return question;
 		    }				
 					

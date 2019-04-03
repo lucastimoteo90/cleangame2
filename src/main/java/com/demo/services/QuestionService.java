@@ -222,10 +222,10 @@ public class QuestionService {
 		User user = userService.findById(userSS.getID());
 		Question question = repository.findById(idQuestion).get();
 		Team team = teamService.findById(idteam);
-		
+		/*
 		if(!question.getRoom().getOpen()) {
 		    	return null;
-		}
+		}*/
 		
 		System.out.println("Usuário: "+user.getName());
 		System.out.println("Question: "+question.getAsk());

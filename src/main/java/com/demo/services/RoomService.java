@@ -161,7 +161,9 @@ public class RoomService {
 		//System.out.println("QUESTION"+question.getMd5correct());
 	    //System.out.println("ANSWER"+answer.getQuestion().getAsk());
 		
-	    
+	    if(!question.getRoom().getOpen()) {
+	    	return null;
+	    }
 		
 		if(question.getMd5correct().equals(alternative.getMd5answer())){
 			alternative.setCorrect(true);
